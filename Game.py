@@ -118,13 +118,6 @@ class LinkedListVisual:
         for fila in self.matriz:
             print(fila)
 
-        
-tablero = LinkedList()
-tablero.generarTablero(5,5)
-tablero.cuadrarNodos(tablero.head)
-tableroVisual = LinkedListVisual()
-tableroVisual.actualizarTablero(tablero.head)
-tableroVisual.imprimirTablero()
 
 
     
