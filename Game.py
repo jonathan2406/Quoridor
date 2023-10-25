@@ -1,127 +1,101 @@
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.up = None
-        self.down = None
-        self.left = None
-        self.right = None
+from Tablero import Tablero
 
-    def __repr__(self) -> str:
-        return "es un nodo"
-    
+class Game:
+    def __ini__(self):
+        self.tablero = None
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
-        self.filas = None
-        self.columnas = None
+    def menuTablero(self):
+        print("Bienvenido a Quoridor")
+        while(True):
+            filas = input("de cuantas filas quiere que sea su tablero? : ")
+            columnas = input("de cuantas columnas quiere que sea su tablero? : ")
+            if int(filas) >= 2 and int(columnas) >= 2:
+                break
+            print("el tamaño debe ser minimo de 2x2")
+        print("el que jugador que primero llegue a la ultima casilla gana!!")
+        tablero = Tablero()
+        tablero.generarTablero(int(filas),int(columnas))
+        self.tablero = tablero
 
-    def __repr__(self) -> str:
-        return "lista enlazada"
+    def run(self):
+        self.menuTablero()
+        jugador = "player1"
+        while(True):
+            self.tablero.tableroVisual.imprimirTablero()
+            opcion = input(f"{jugador} precione 1 para poner bloqueo y presione 2 para moverse: ")
+            if opcion not in ["1","2"]:
+                print("digite una opcion valida")
+                continue
+            elif opcion == "1":
+                if self.bloqueo() == False:
+                    print("bloqueo no puesto...")
+                    continue
+                print("bloqueo puesto")
+            elif opcion == "2":
+                if self.mover(jugador) == True:
+                    return
+            jugador = self.setearJugador(jugador)
 
-    def append(self, value):
-        new_node = Node(value)
-        if(self.head == None):
-            self.head = new_node
-            self.tail = new_node
-        else:
-            self.tail.right = new_node
-            new_node.left = self.tail
-            self.tail = new_node
+    def bloqueo(self):
+        while(True):
+            fila = input("ingrese la fila donde quiere poner el bloqueo: ")
+            columna = input("ingrese la columna donde quiere poner el bloqueo: ")
+            if fila.isdigit() == False or columna.isdigit() == False:
+                print("caracteres invalidos...")
+                continue
+            elif int(fila) > self.tablero.tablero.filas: 
+                print("fila invalida")
+                continue
+            elif int(columna) > self.tablero.tablero.columnas:
+                print("columna invalida")
+                continue
+            bloqueo = self.tablero.bloqueo(int(fila),int(columna))
+            self.tablero.tableroVisual.actualizarTablero(self.tablero.tablero.head)
+            return bloqueo
 
-    def generarTablero(self, filas, columnas):
-        self.filas = filas-1
-        self.columnas = columnas-1
-        for i in range(filas):
-            newLinkedList = LinkedList()
-            self.append(newLinkedList)
-            for j in range(columnas):
-                if i == 0 and j == 0:
-                    newLinkedList.append("player1")
-                elif i == filas-1 and j == columnas-1:
-                    newLinkedList.append("player2")
+    def mover(self, jugador):
+        while(True):
+            opcion = input("digite 1 para ir arriba, 2 para abajo, 3 para derecha y 4 para izquierda: ")
+            if opcion.isdigit() == False:
+                print("digito invalido...")
+            elif opcion not in ["1","2","3","4"]:
+                print("numero invalido solo entre 1 y 4 >:(")
+            elif opcion == "1":
+                movimiento = self.tablero.desplazarArriba(jugador)
+                if movimiento == True:
+                    print(f"{jugador} GANADORRRRRRRR")
+                    return True
+                elif movimiento == False:
+                    continue
                 else:
-                    newLinkedList.append(None)
+                    break
+            elif opcion == "2":
+                movimiento = self.tablero.desplazarAbajo(jugador)
+                if movimiento == True:
+                    print(f"{jugador} GANADORRRRRRRR")
+                    return True
+                elif movimiento == False:
+                    continue
+                else:
+                    break
+            elif opcion == "3":
+                movimiento = self.tablero.desplazarDerecha(jugador)
+                if movimiento == False:
+                    continue
+                else: 
+                    break
+            elif opcion == "4":
+                movimiento = self.tablero.desplazarIzquierda(jugador)
+                if movimiento == False:
+                    continue
+                else:
+                    break
 
-    def traverse(self):
-        current = self.head
-        while (current):
-            print(current.value)
-            salto = current.value.head
-            current = current.right 
-            while (salto):
-                print(salto)
-                salto = salto.right
-
-    def cuadrarNodos(self, current, fila = 0):
-        if fila == 0:
-            currentLinkedList = current.value.head
-            siguienteLinkedList = current.right.value.head
-            while(siguienteLinkedList):
-                currentLinkedList.down = siguienteLinkedList
-                siguienteLinkedList.up = currentLinkedList
-                #saltos
-                siguienteLinkedList = siguienteLinkedList.right
-                currentLinkedList = currentLinkedList.right
-            self.cuadrarNodos(current.right,fila+1)
-        elif fila == self.filas:
-            currentLinkedList = current.value.head
-            anteriorLinkedList = current.left.value.head
-            while(currentLinkedList):
-                currentLinkedList.up = anteriorLinkedList
-                #saltos
-                anteriorLinkedList = anteriorLinkedList.right
-                currentLinkedList = currentLinkedList.right
+    def setearJugador(self, jugador):
+        if jugador == "player1":
+            return "player2"
         else:
-            currentLinkedList = current.value.head
-            siguienteLinkedList = current.right.value.head
-            anteriorLinkedList = current.left.value.head
-            while(currentLinkedList):
-                anteriorLinkedList.down = currentLinkedList
-                currentLinkedList.up = anteriorLinkedList
-                currentLinkedList.down = siguienteLinkedList
-                siguienteLinkedList.up = currentLinkedList
-                #saltos
-                anteriorLinkedList = anteriorLinkedList.right
-                siguienteLinkedList = siguienteLinkedList.right
-                currentLinkedList = currentLinkedList.right
-            self.cuadrarNodos(current.right,fila+1)
+            return "player1"
+
+
             
-
-class LinkedListVisual:
-    def __init__(self):
-        self.matriz = None
-
-    def actualizarTablero(self, head):
-        self.matriz = []
-        self.generarTableroVisual(head)
-
-    def generarTableroVisual(self, currentLinkedList):
-        if (currentLinkedList is not None):
-            current = currentLinkedList
-            salto = current.value.head
-            fila = []
-            self.matriz.append(fila)
-            while (salto):
-                if salto.value == None:
-                    fila.append("-")
-                elif salto.value == "#":
-                    fila.append("#")
-                elif salto.value == "player1":
-                    fila.append("P1")
-                elif salto.value == "player2":
-                    fila.append("P2")
-                salto = salto.right 
-            self.generarTableroVisual(current.right)
-    def imprimirTablero(self):
-        for fila in self.matriz:
-            print(fila)
-
-
-
-    
-
-
-
-        
