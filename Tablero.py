@@ -71,7 +71,7 @@ class Tablero:
         if nodoJugador.up is not None:
             if nodoJugador.up.value != None:
                 return False
-            if nodoJugador.up.up == None:
+            if nodoJugador.up.up == None and jugador != "player1":
                 return True
             nodoJugador.value = None
             nodoJugador.up.value = jugador
@@ -85,7 +85,7 @@ class Tablero:
                 return False
         if nodoJugador.down.value != None:
             return 
-        if nodoJugador.down.down is None:
+        if nodoJugador.down.down is None and jugador != "player2":
             return True
         nodoJugador.value = None
         nodoJugador.down.value = jugador
