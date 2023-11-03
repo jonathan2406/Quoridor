@@ -1,4 +1,6 @@
-#clase la cual se encarga de guadar y representar visualmente nuestra lista enlazada graficmanete por medio de una matriz convencional de filas pero no interactua nada en la logica del juego
+# clase la cual se encarga de guadar y representar visualmente nuestra lista enlazada graficamanete
+# por medio de una matriz convencional de filas pero no interactua nada en la logica del juego
+
 class LinkedListVisual:
     def __init__(self):
         self.matriz = None
@@ -7,7 +9,7 @@ class LinkedListVisual:
         self.matriz = []
         self.generarTableroVisual(head)
 
-    #metodo 
+    # metodo
     def generarTableroVisual(self, currentLinkedList):
         if (currentLinkedList is not None):
             current = currentLinkedList
@@ -19,9 +21,9 @@ class LinkedListVisual:
                     fila.append("-")
                 elif salto.value == "#":
                     fila.append("#")
-                elif salto.value == "player1":
+                elif salto.value == "Player1":
                     fila.append("P1")
-                elif salto.value == "player2":
+                elif salto.value == "Player2":
                     fila.append("P2")
                 salto = salto.right 
             self.generarTableroVisual(current.right)

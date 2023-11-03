@@ -7,16 +7,4 @@ class Node:
         self.right = None
 
     def __repr__(self) -> str:
-        return "es un nodo"
-    
-
-
-            
-
-
-
-    
-
-
-
-        
+        return "Es un nodo"

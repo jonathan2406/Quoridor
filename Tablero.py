@@ -9,7 +9,7 @@ class Tablero:
 
     def generarTablero(self, filas, columnas):
         tablero = LinkedList()
-        tablero.generarTablero(int(filas),int(columnas))
+        tablero.generarTablero(int(filas), int(columnas))
         tablero.cuadrarNodos(tablero.head)
         tableroVisual = LinkedListVisual()
         tableroVisual.actualizarTablero(tablero.head)
@@ -42,16 +42,16 @@ class Tablero:
     def bloqueo(self, fila, columna):
         nodoBloquear = self.getNodoPorPosicion(fila, columna)
         if nodoBloquear.value == "#":
-            print("ya hay un bloqueo en esa posicion")
+            print("Ya hay un bloqueo en esa posición")
             return False
         elif nodoBloquear.value != None:
-            print("no puedes bloquear donde hay un jugador")
+            print("No puedes bloquear donde hay un jugador")
             return False
         nodoBloquear.value = "#"
-        verificacionp1 = self.verificarGanarP1(self.getNodojugador("player1"))
-        print(f"valor verificacion p1: {verificacionp1}")
-        verificacionp2 = self.verificarGanarP2(self.getNodojugador("player2"))
-        print(f"valor verificacion p2: {verificacionp2}")
+        verificacionp1 = self.verificarGanarP1(self.getNodojugador("Player1"))
+        print(f"Valor verificación P1: {verificacionp1}")
+        verificacionp2 = self.verificarGanarP2(self.getNodojugador("Player2"))
+        print(f"Valor verificación P2: {verificacionp2}")
         self.tableroVisual.actualizarTablero(self.tablero.head)
 
         if verificacionp1 == True and verificacionp2 == True:
@@ -59,33 +59,30 @@ class Tablero:
         else:
             nodoBloquear.value = None
             return False
-        
-
 
     def desplazarArriba(self, jugador):
         nodoJugador = self.getNodojugador(jugador)
         if nodoJugador.up is None:
-            if jugador == "player1":
+            if jugador == "Player1":
                 return False
 
         if nodoJugador.up is not None:
             if nodoJugador.up.value != None:
                 return False
-            if nodoJugador.up.up == None and jugador != "player1":
+            if nodoJugador.up.up == None and jugador != "Player1":
                 return True
             nodoJugador.value = None
             nodoJugador.up.value = jugador
             self.tableroVisual.actualizarTablero(self.tablero.head)
-        
 
     def desplazarAbajo(self, jugador):
         nodoJugador = self.getNodojugador(jugador)
         if nodoJugador.down is None:
-            if jugador == "player2":
+            if jugador == "Player2":
                 return False
         if nodoJugador.down.value != None:
             return 
-        if nodoJugador.down.down is None and jugador != "player2":
+        if nodoJugador.down.down is None and jugador != "Player2":
             return True
         nodoJugador.value = None
         nodoJugador.down.value = jugador
@@ -115,7 +112,7 @@ class Tablero:
         if visitados is None:
             visitados = LinkedList()
 
-        if nodo is None or visitados.contiene(nodo) == True or nodo.value == "#" or nodo.value =="player2":
+        if nodo is None or visitados.contiene(nodo) == True or nodo.value == "#" or nodo.value == "Player2":
             return False
 
         if nodo.down is None:
@@ -130,11 +127,10 @@ class Tablero:
 
         return arriba or abajo or derecha or izquierda
 
-
     def verificarGanarP2(self, nodo, visitados=None):
         if visitados is None:
             visitados = LinkedList()
-        if nodo is None or visitados.contiene(nodo) == True or nodo.value == "#" or nodo.value =="player1":
+        if nodo is None or visitados.contiene(nodo) == True or nodo.value == "#" or nodo.value == "Player1":
             return False
 
         if nodo.up is None:
@@ -148,4 +144,3 @@ class Tablero:
         izquierda = self.verificarGanarP2(nodo.left,visitados)
 
         return arriba or abajo or derecha or izquierda
-
